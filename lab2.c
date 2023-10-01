@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 struct timeval start_time, end_time;
-int n = 50; 
+int n = 100000; 
 
 
 int getRandom(int min, int max) {
@@ -118,7 +118,7 @@ int main() {
 
     gettimeofday(&end_time, NULL);
     double elapsed_time_bubble = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
-    printf("\033[1;32mSorted List with Bubble Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
+    
     line_count = 0;
     for (int i = 0; i < n; i++) {
         printf("%d ", copy_arr[i]);
@@ -129,6 +129,7 @@ int main() {
             line_count++;
         }
     }
+    printf("\033[1;32mSorted List with Bubble Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
     printf("\n\n");
 
     for(int i = 0; i<n; i++){
@@ -141,7 +142,7 @@ int main() {
 
     gettimeofday(&end_time, NULL);
     elapsed_time_bubble = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
-    printf("\033[1;32mSorted List with Section Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
+   
     line_count = 0;
     for (int i = 0; i < n; i++) {
         printf("%d ", copy_arr[i]); 
@@ -152,6 +153,7 @@ int main() {
             line_count++;
         }
     }
+    printf("\033[1;32mSorted List with Section Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
     printf("\n\n");
 
     for(int i = 0; i<n; i++){
@@ -164,7 +166,7 @@ int main() {
 
     gettimeofday(&end_time, NULL);
     elapsed_time_bubble = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
-    printf("\033[1;32mSorted List with Insertion Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
+    
     line_count = 0;
     for (int i = 0; i < n; i++) {
         printf("%d ", copy_arr[i]);
@@ -175,6 +177,7 @@ int main() {
             line_count++;
         }
     }
+    printf("\033[1;32mSorted List with Insertion Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
     printf("\n\n");
 
     for(int i = 0; i<n; i++){
@@ -185,8 +188,8 @@ int main() {
     quicksort(copy_arr, 0, n-1);
 
     gettimeofday(&end_time, NULL);
-    elapsed_time_bubble = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
-    printf("\033[1;32mSorted List with Quick Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
+   elapsed_time_bubble = (end_time.tv_sec - start_time.tv_sec) + (end_time.tv_usec - start_time.tv_usec) / 1000000.0;
+    
     line_count = 0;
     for (int i = 0; i < n; i++) {
         printf("%d ", copy_arr[i]);
@@ -197,5 +200,6 @@ int main() {
             line_count++;
         }
     }
+    printf("\033[1;32mSorted List with Quick Sort\033[1;0m \033[1;31m(Time: %.6f seconds):\033[1;0m\n", elapsed_time_bubble);
     printf("\n\n");
 }
