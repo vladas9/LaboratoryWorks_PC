@@ -23,8 +23,8 @@ typedef struct {
 
 typedef struct {
     Element *elements;
-    int size;      //current size
-    int capacity;  //current total capacity 
+    int size;     
+    int capacity;  
 } stack;
 
 stack* create_stack(int capacity) {
