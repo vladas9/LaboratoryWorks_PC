@@ -12,7 +12,7 @@ void initializeBuffer(Buffer *buffer) {
     buffer->size = 1000;
     buffer->text = (char *)malloc(buffer->size * sizeof(char));
     if (!buffer->text) {
-        printf("Memory allocation failed!\n");
+        printf("\033[1;31mMemory allocation failed!\033[0m\n");
         exit(1);
     }
     buffer->text[0] = '\0';
@@ -39,7 +39,7 @@ void enterText(Buffer *buffer) {
         buffer->size *= 2;
         buffer->text = (char *)realloc(buffer->text, buffer->size * sizeof(char));
         if (!buffer->text) {
-            printf("Memory allocation failed!\n");
+            printf("\033[1;31mMemory allocation failed!\033[0m\n");
             exit(1);
         }
     }
@@ -47,8 +47,11 @@ void enterText(Buffer *buffer) {
     strcat(buffer->text, " ");
 }
 
-
-
+void printBuffer(Buffer *buffer){
+    printf("\033[1;32m Text in buffer:\033[0m\n");
+    printf("%s", buffer->text);
+    printf("\n");
+}
 int isDelimiter(char c) {
     return !isalpha(c) && !isdigit(c) && c != '_';
 }
@@ -71,7 +74,7 @@ int searchForWord(Buffer *buffer, const char *word) {
 void replaceWord(Buffer *buffer, const char *oldWord, const char *newWord) {
     char *temp = (char *)malloc(buffer->size * sizeof(char));
     if (!temp) {
-        printf("Memory allocation failed!\n");
+        printf("\033[1;31mMemory allocation failed!\033[0m\n");
         exit(1);
     }
     temp[0] = '\0';
@@ -98,9 +101,9 @@ void replaceWord(Buffer *buffer, const char *oldWord, const char *newWord) {
     strcpy(buffer->text, temp);
 
     if (replaced) {
-        printf("Word was successfully replaced\n");
+        printf("\033[1;32mWord was successfully replaced\033[0m\n");
     } else {
-        printf("There is no such word\n");
+        printf("\033[1;31mThere is no such word\033[0m\n");
     }
     free(temp);
 }
@@ -118,12 +121,12 @@ void saveToFile(Buffer *buffer, const char *filename) {
     sprintf(path, "data/%s.txt", filename);
     fptr = fopen(path, "w");
     if (!fptr) {
-        printf("Unable to open the file for writing.\n");
+        printf("\033[1;31mUnable to open the file for writing.\033[0m\n");
         return;
     }
     fputs(buffer->text, fptr);
     fclose(fptr);
-    printf("Text saved to %s\n", path);
+    printf("\033[1;32mText saved to %s\033[0m\n", path);
 }
 
 void loadFromFile(Buffer *buffer, const char *filename) {
@@ -132,7 +135,7 @@ void loadFromFile(Buffer *buffer, const char *filename) {
     sprintf(path, "data/%s.txt", filename);
     fptr = fopen(path, "r");
     if (!fptr) {
-        printf("Unable to open the file for reading.\n");
+        printf("\033[1;31mUnable to open the file for reading.\033[0m\n");
         return;
     }
 
@@ -144,7 +147,7 @@ void loadFromFile(Buffer *buffer, const char *filename) {
         buffer->size = fileSize + 1;  
         buffer->text = (char *)realloc(buffer->text, buffer->size);
         if (!buffer->text) {
-            printf("Memory allocation failed!\n");
+            printf("\033[1;31mMemory allocation failed!\033[0m\n");
             fclose(fptr);
             return;
         }
@@ -154,7 +157,7 @@ void loadFromFile(Buffer *buffer, const char *filename) {
     buffer->text[bytesRead] = '\0';  
 
     fclose(fptr);
-    printf("Loaded text from %s\n", path);
+    printf("\033[1;32mLoaded text from %s\033[0m\n", path);
 }
 
 
@@ -164,24 +167,29 @@ int main() {
     int choice;
 
     do {
-        printf("\n=== TEXT EDITOR ===\n");
-        printf("1. Enter Text\n");
-        printf("2. Search for Word\n");
-        printf("3. Replace Word\n");
-        printf("4. Delete Buffer\n");
-        printf("5. Save to File\n");
-        printf("6. Load from File\n");
-        printf("7. Exit\n");
+        printf("\n\033[1;34m=== TEXT EDITOR ===\033[0m\n");
+        printf("\033[1;31m1. Enter Text\033[0m\n");
+        printf("\033[1;32m2. Print Buffer\033[0m\n"); 
+        printf("\033[1;33m3. Search for Word\033[0m\n");
+        printf("\033[1;34m4. Replace Word\033[0m\n");
+        printf("\033[1;35m5. Delete Buffer\033[0m\n");
+        printf("\033[1;36m6. Save to File\033[0m\n");
+        printf("\033[1;37m7. Load from File\033[0m\n");
+        printf("\033[1;38;5m8. Exit\033[0m\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
         getchar();
 
         switch (choice) {
             case 1:
+                printf("\033[1;38;5m To add new line print \\n \033[0m\n");
                 enterText(&buffer);
                 printf("Text was added to buffer\n");
                 break;
-            case 2:
+            case 2: 
+                printBuffer(&buffer);
+                break;
+            case 3:  
                 {
                     char word[100];
                     printf("Enter word to search: ");
@@ -191,7 +199,7 @@ int main() {
                     printf("Occurrences of '%s': %d\n", word, count);
                 }
                 break;
-            case 3:
+            case 4:
                 {
                     char oldWord[100], newWord[100];
                     printf("Enter word to replace: ");
@@ -203,11 +211,11 @@ int main() {
                     replaceWord(&buffer, oldWord, newWord);
                 }
                 break;
-            case 4:
+            case 5:
                 deleteBuffer(&buffer);
                 printf("Buffer was deleted\n");
                 break;
-            case 5:
+            case 6:
                 {
                     char filename[100];
                     printf("Enter filename without .txt extension: ");
@@ -216,7 +224,7 @@ int main() {
                     saveToFile(&buffer, filename);
                 }
                 break;
-            case 6:
+            case 7:
                 {
                     char filename[100];
                     printf("Enter filename without .txt extension: ");
@@ -225,15 +233,16 @@ int main() {
                     loadFromFile(&buffer, filename);
                 }
                 break;
-            case 7:
+            case 8:  
                 printf("Exiting...\n");
                 break;
             default:
                 printf("Invalid choice!\n");
                 break;
         }
-    } while (choice != 7);
+    } while (choice != 8); 
 
     deleteBuffer(&buffer);
     return 0;
 }
+
