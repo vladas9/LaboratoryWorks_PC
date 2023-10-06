@@ -4,7 +4,7 @@
 #include <sys/time.h>
 
 struct timeval start_time, end_time;
-int n = 100000; 
+int n = 100; 
 
 
 int getRandom(int min, int max) {
