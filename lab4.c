@@ -8,6 +8,14 @@ typedef struct Buffer {
     size_t size;
 } Buffer;
 
+void displayHeader(const char *message) {
+    printf("\033[1;34m┌───────────────────────────────────────┐\033[0m\n");
+    printf("\033[1;34m│\033[0m%*s%*s\033[1;34m│\033[0m\n",
+           (40 + strlen(message)) / 2, message, 
+           40 - (40 + strlen(message)) / 2 -  1, "");
+    printf("\033[1;34m└───────────────────────────────────────┘\033[0m\n");
+}
+
 void initializeBuffer(Buffer *buffer) {
     buffer->size = 1000;
     buffer->text = (char *)malloc(buffer->size * sizeof(char));
@@ -20,6 +28,7 @@ void initializeBuffer(Buffer *buffer) {
 
 void enterText(Buffer *buffer) {
     char temp[500];
+    displayHeader("Enter your text below");
     printf("Enter your text: ");
     fgets(temp, sizeof(temp), stdin);
     
@@ -48,7 +57,7 @@ void enterText(Buffer *buffer) {
 }
 
 void printBuffer(Buffer *buffer){
-    printf("\033[1;32m Text in buffer:\033[0m\n");
+    displayHeader("Text in buffer");
     printf("%s", buffer->text);
     printf("\n");
 }
@@ -167,24 +176,29 @@ int main() {
     int choice;
 
     do {
-        printf("\n\033[1;34m=== TEXT EDITOR ===\033[0m\n");
-        printf("\033[1;31m1. Enter Text\033[0m\n");
-        printf("\033[1;32m2. Print Buffer\033[0m\n"); 
-        printf("\033[1;33m3. Search for Word\033[0m\n");
-        printf("\033[1;34m4. Replace Word\033[0m\n");
-        printf("\033[1;35m5. Delete Buffer\033[0m\n");
-        printf("\033[1;36m6. Save to File\033[0m\n");
-        printf("\033[1;37m7. Load from File\033[0m\n");
-        printf("\033[1;38;5m8. Exit\033[0m\n");
-        printf("Enter your choice: ");
+        printf("\n\033[1;34m┌───────────────────────────────────────┐\033[0m\n");
+        printf("\033[1;34m│\033[0m           \033[1;36mTEXT EDITOR MENU\033[0m            \033[1;34m│\033[0m\n");
+        printf("\033[1;34m├───────────────────────────────────────┤\033[0m\n");
+
+        printf("\033[1;31m│ [1]\033[0m Enter Text                        \033[1;34m│\033[0m\n");
+        printf("\033[1;32m│ [2]\033[0m Print Buffer                      \033[1;34m│\033[0m\n");
+        printf("\033[1;33m│ [3]\033[0m Search for Word                   \033[1;34m│\033[0m\n");
+        printf("\033[1;34m│ [4]\033[0m Replace Word                      \033[1;34m│\033[0m\n");
+        printf("\033[1;35m│ [5]\033[0m Delete Buffer                     \033[1;34m│\033[0m\n");
+        printf("\033[1;36m│ [6]\033[0m Save to File                      \033[1;34m│\033[0m\n");
+        printf("\033[1;37m│ [7]\033[0m Load from File                    \033[1;34m│\033[0m\n");
+        printf("\033[1;38;5m│ [8]\033[0m Exit                              \033[1;34m│\033[0m\n");
+        printf("\033[1;34m└───────────────────────────────────────┘\033[0m\n");
+        
+        printf("\033[1;36mChoice:\033[0m ");
         scanf("%d", &choice);
         getchar();
 
         switch (choice) {
             case 1:
-                printf("\033[1;38;5m To add new line print \\n \033[0m\n");
+                printf("\033[1;38;5m To add a new line, use \\n \033[0m\n");
                 enterText(&buffer);
-                printf("Text was added to buffer\n");
+                printf("\033[1;32mText was added to buffer\033[0m\n");
                 break;
             case 2: 
                 printBuffer(&buffer);
@@ -192,7 +206,8 @@ int main() {
             case 3:  
                 {
                     char word[100];
-                    printf("Enter word to search: ");
+                    displayHeader("Enter word to search");
+                    printf("->");
                     fgets(word, sizeof(word), stdin);
                     word[strcspn(word, "\n")] = '\0';
                     int count = searchForWord(&buffer, word);
@@ -202,10 +217,12 @@ int main() {
             case 4:
                 {
                     char oldWord[100], newWord[100];
-                    printf("Enter word to replace: ");
+                    displayHeader("Enter word to replace");
+                    printf("->");
                     fgets(oldWord, sizeof(oldWord), stdin);
                     oldWord[strcspn(oldWord, "\n")] = '\0';
-                    printf("Enter new word: ");
+                    displayHeader("Enter new word");
+                    printf("->");
                     fgets(newWord, sizeof(newWord), stdin);
                     newWord[strcspn(newWord, "\n")] = '\0';
                     replaceWord(&buffer, oldWord, newWord);
@@ -213,12 +230,13 @@ int main() {
                 break;
             case 5:
                 deleteBuffer(&buffer);
-                printf("Buffer was deleted\n");
+                printf("\033[1;32mBuffer was deleted\033[0m\n");
                 break;
             case 6:
                 {
                     char filename[100];
-                    printf("Enter filename without .txt extension: ");
+                    displayHeader("Enter filename without .txt extension");
+                    printf("->");
                     fgets(filename, sizeof(filename), stdin);
                     filename[strcspn(filename, "\n")] = '\0';
                     saveToFile(&buffer, filename);
@@ -227,17 +245,18 @@ int main() {
             case 7:
                 {
                     char filename[100];
-                    printf("Enter filename without .txt extension: ");
+                    displayHeader("Enter filename without .txt extension");
+                    printf("->");
                     fgets(filename, sizeof(filename), stdin);
                     filename[strcspn(filename, "\n")] = '\0';
                     loadFromFile(&buffer, filename);
                 }
                 break;
             case 8:  
-                printf("Exiting...\n");
+                printf("\033[1;38;5mExiting...\033[0m\n");
                 break;
             default:
-                printf("Invalid choice!\n");
+                printf("\033[1;31mInvalid choice!\033[0m\n");
                 break;
         }
     } while (choice != 8); 
@@ -245,4 +264,5 @@ int main() {
     deleteBuffer(&buffer);
     return 0;
 }
+
 
