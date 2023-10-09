@@ -120,14 +120,13 @@ void replaceWord(Buffer *buffer, const char *oldWord, const char *newWord) {
 
 void deleteBuffer(Buffer *buffer) {
     free(buffer->text);
-    buffer->text = NULL;
     buffer->size = 0;
 }
 
 void saveToFile(Buffer *buffer, const char *filename) {
     FILE *fptr;
     char path[50];
-    sprintf(path, "data/%s.txt", filename);
+    sprintf(path, "%s.txt", filename);
     fptr = fopen(path, "w");
     if (!fptr) {
         printf("\033[1;31mUnable to open the file for writing.\033[0m\n");
@@ -141,7 +140,7 @@ void saveToFile(Buffer *buffer, const char *filename) {
 void loadFromFile(Buffer *buffer, const char *filename) {
     FILE *fptr;
     char path[50];
-    sprintf(path, "data/%s.txt", filename);
+    sprintf(path, "%s.txt", filename);
     fptr = fopen(path, "r");
     if (!fptr) {
         printf("\033[1;31mUnable to open the file for reading.\033[0m\n");
@@ -176,6 +175,7 @@ int main() {
     int choice;
 
     do {
+        printf("\033[H\033[J");
         printf("\n\033[1;34m┌───────────────────────────────────────┐\033[0m\n");
         printf("\033[1;34m│\033[0m           \033[1;36mTEXT EDITOR MENU\033[0m            \033[1;34m│\033[0m\n");
         printf("\033[1;34m├───────────────────────────────────────┤\033[0m\n");
@@ -231,6 +231,7 @@ int main() {
             case 5:
                 deleteBuffer(&buffer);
                 printf("\033[1;32mBuffer was deleted\033[0m\n");
+                initializeBuffer(&buffer);
                 break;
             case 6:
                 {
@@ -259,6 +260,8 @@ int main() {
                 printf("\033[1;31mInvalid choice!\033[0m\n");
                 break;
         }
+        printf("\033[1;33m\nPress enter to continue...\033[0m");
+        getchar();
     } while (choice != 8); 
 
     deleteBuffer(&buffer);
