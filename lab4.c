@@ -126,7 +126,7 @@ void deleteBuffer(Buffer *buffer) {
 void saveToFile(Buffer *buffer, const char *filename) {
     FILE *fptr;
     char path[50];
-    sprintf(path, "%s.txt", filename);
+    sprintf(path, "%s", filename);
     fptr = fopen(path, "w");
     if (!fptr) {
         printf("\033[1;31mUnable to open the file for writing.\033[0m\n");
@@ -140,7 +140,7 @@ void saveToFile(Buffer *buffer, const char *filename) {
 void loadFromFile(Buffer *buffer, const char *filename) {
     FILE *fptr;
     char path[50];
-    sprintf(path, "%s.txt", filename);
+    sprintf(path, "%s", filename);
     fptr = fopen(path, "r");
     if (!fptr) {
         printf("\033[1;31mUnable to open the file for reading.\033[0m\n");
@@ -236,7 +236,7 @@ int main() {
             case 6:
                 {
                     char filename[100];
-                    displayHeader("Enter filename without .txt extension");
+                    displayHeader("Enter filename");
                     printf("->");
                     fgets(filename, sizeof(filename), stdin);
                     filename[strcspn(filename, "\n")] = '\0';
@@ -246,7 +246,7 @@ int main() {
             case 7:
                 {
                     char filename[100];
-                    displayHeader("Enter filename without .txt extension");
+                    displayHeader("Enter filename");
                     printf("->");
                     fgets(filename, sizeof(filename), stdin);
                     filename[strcspn(filename, "\n")] = '\0';
